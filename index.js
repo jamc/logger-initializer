@@ -1,6 +1,5 @@
 var logger      = require('winston');
 var moment      = require('moment');
-var util        = require('util');
 var appRoot     = require('app-root-path');
 var packageJson = require(appRoot + '/package.json');
 
@@ -17,10 +16,10 @@ module.exports = function initLogger(logLevel) {
         var timestamp = options.timestamp();
         var appName   = packageJson.name;
         var logLevel  = options.level.toUpperCase();
-        var message   = ( undefined !== options.message ? options.message : '' );
-        var meta      = (options.meta && Object.keys(options.meta).length ? ' - ' + util.inspect(options.meta) : '' );
+        var message   = ( !!options.message ? (' - ' + options.message) : '' );
+        var meta      = (options.meta && Object.keys(options.meta).length ? (' - ' + JSON.stringify(options.meta)) : '' );
 
-        return '[' + timestamp + '] (' + appName + ') ' + logLevel + ' - ' + message + meta;
+        return '[' + timestamp + '] (' + appName + ') ' + logLevel + message + meta;
       }
     });
     logger.silly('Winston initialized');
